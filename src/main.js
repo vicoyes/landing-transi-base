@@ -1,1 +1,1 @@
-// Archivo reservado para futuras interacciones de la landing.
+// No usado actualmente: index.html usa Tailwind CDN + JS inline (menú móvil, IntersectionObserver, lucide.createIcons).

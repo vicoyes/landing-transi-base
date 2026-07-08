@@ -1,15 +1,778 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Landing Transi</title>
-    <meta name="description" content="Nueva landing para Transi.">
-    <link rel="stylesheet" href="src/styles.css">
+    <title>Alquimia del alma · 2ª etapa con Transi Aracil · Encuentro con tu ser</title>
+    <meta name="description" content="La segunda etapa del camino alquímico. 9 portales de transformación interior para quienes ya completaron Encuentro con tu ser. Con Transi Aracil, psicóloga Gestalt.">
+    <meta property="og:title" content="El encuentro con la alquimia de tu alma — segunda etapa del camino alquímico">
+    <meta property="og:description" content="9 portales de transformación interior para quienes ya completaron Encuentro con tu ser. Con Transi Aracil, psicóloga Gestalt.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600;700&display=swap">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              surface: "#fbf9f4",
+              "surface-dim": "#dbdad5",
+              "surface-bright": "#fbf9f4",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#f5f3ee",
+              "surface-container": "#f0ede8",
+              "surface-container-high": "#e9e7e2",
+              "surface-container-highest": "#e4e2dd",
+              "on-surface": "#1c1c1a",
+              "on-surface-variant": "#484742",
+              outline: "#797771",
+              "outline-variant": "#c9c6bf",
+              primary: "#d4af37",
+              "on-primary": "#ffffff",
+              "primary-container": "#f3e5b3",
+              "on-primary-container": "#231b00",
+              secondary: "#705d00",
+              "on-secondary": "#ffffff",
+              "secondary-container": "#ffe16e",
+              "on-secondary-container": "#221b00",
+              tertiary: "#4b6546",
+              "on-tertiary": "#ffffff",
+              "tertiary-container": "#cdebc4",
+              "on-tertiary-container": "#092008",
+              error: "#ba1a1a",
+              "on-error": "#ffffff",
+              "error-container": "#ffdad6",
+              "on-error-container": "#410002",
+              "hero-surface": "#33362a",
+              "hero-surface-variant": "#4b4f3c",
+              "on-hero-surface": "#f5f1e6",
+              "on-hero-surface-variant": "#d8d4c4"
+            },
+            fontFamily: {
+              serif: ['"EB Garamond"', "serif"],
+              sans: ["Manrope", "sans-serif"]
+            }
+          }
+        }
+      };
+    </script>
+
+    <style>
+      @keyframes hero-photo-kenburns {
+        0% { background-size: 116% auto; background-position: 48% 38%; }
+        100% { background-size: 130% auto; background-position: 52% 62%; }
+      }
+      @keyframes rainbow-shift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      /* Cristal cromático: foto real de la dispersión de luz (assets/hero-rainbow) con velo oscuro para legibilidad */
+      .hero-prism { position: relative; overflow: hidden; background: linear-gradient(160deg, #33362a 0%, #4b4f3c 100%); }
+      .hero-prism::before {
+        content: "";
+        position: absolute;
+        inset: -70px -8%;
+        background-image: image-set(url("assets/hero-rainbow.webp") type("image/webp"), url("assets/hero-rainbow.jpg") type("image/jpeg"));
+        background-size: 116% auto;
+        background-position: 48% 38%;
+        pointer-events: none;
+        transform: translateY(var(--hero-parallax, 0px));
+        will-change: transform;
+        animation: hero-photo-kenburns 30s ease-in-out infinite alternate;
+      }
+      .hero-prism::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(160deg, rgba(20, 21, 15, 0.52) 0%, rgba(30, 32, 22, 0.44) 45%, rgba(20, 21, 15, 0.58) 100%);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .hero-prism::before { animation: none; transform: none; }
+      }
+
+      /* ============ LIQUID GLASS (estilo Apple) ============
+         Técnica de capas reales, no pseudo-elementos combinados: el filtro SVG de
+         distorsión vive en `filter` sobre una capa vacía dedicada (.liquid-glass__effect),
+         separada del tinte y del brillo — así solo se deforma el "vidrio", nunca el texto.
+         El <script> del final inyecta estas capas como hijos reales de cada
+         .prism-glass / .prism-glass-dark / .liquid-nav (ver initLiquidGlass()).
+         Antes de que corra el JS (o si algo falla) el wrapper ya se ve bien solo: */
+      .prism-glass,
+      .prism-glass-dark,
+      .liquid-nav {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        border-radius: inherit;
+        box-shadow: 0 10px 30px -12px rgba(60, 50, 20, 0.22);
+        backdrop-filter: blur(14px) saturate(160%);
+        -webkit-backdrop-filter: blur(14px) saturate(160%);
+      }
+      .prism-glass { background: rgba(255, 255, 255, 0.4); }
+      .prism-glass-dark { background: rgba(20, 22, 15, 0.28); box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.4); }
+      .liquid-nav { background: rgba(251, 249, 244, 0.62); box-shadow: 0 4px 24px -10px rgba(60, 50, 20, 0.18); }
+
+      /* Una vez montadas las capas por JS, el wrapper deja de pintar fondo/blur propios (lo hacen las capas) */
+      .prism-glass.liquid-glass--ready,
+      .prism-glass-dark.liquid-glass--ready,
+      .liquid-nav.liquid-glass--ready {
+        background: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+
+      .liquid-glass__effect {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        border-radius: inherit;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        filter: url(#liquid-glass-distortion);
+      }
+      .liquid-glass__tint {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        border-radius: inherit;
+        background: rgba(255, 255, 255, 0.4);
+      }
+      .prism-glass-dark > .liquid-glass__tint { background: rgba(20, 22, 15, 0.3); }
+      .liquid-nav > .liquid-glass__tint { background: rgba(251, 249, 244, 0.66); }
+
+      .liquid-glass__shine {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        border-radius: inherit;
+        pointer-events: none;
+        box-shadow:
+          inset 1.5px 1.5px 1px rgba(255, 255, 255, 0.7),
+          inset -1px -1px 1px 1px rgba(255, 255, 255, 0.35);
+      }
+      .prism-glass-dark > .liquid-glass__shine {
+        box-shadow:
+          inset 1px 1px 1px rgba(255, 255, 255, 0.22),
+          inset -1px -1px 1px 1px rgba(0, 0, 0, 0.3);
+      }
+
+      /* El contenido original NO se mueve a un wrapper (rompería <summary> dentro de <details>);
+         solo se eleva por encima de las capas decorativas, que se anteponen como hermanos. */
+      .liquid-glass--ready > :not(.liquid-glass__effect, .liquid-glass__tint, .liquid-glass__shine) {
+        position: relative;
+        z-index: 3;
+      }
+
+      .rainbow-edge { position: relative; }
+      .rainbow-edge::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 1.5px;
+        background: linear-gradient(135deg, rgba(207,150,131,0.55) 0%, rgba(223,176,124,0.55) 25%, rgba(161,181,154,0.55) 50%, rgba(143,158,161,0.55) 75%, rgba(143,141,154,0.55) 100%);
+        background-size: 250% 250%;
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+        z-index: 3;
+        animation: rainbow-shift 12s linear infinite;
+      }
+      /* Glow: halo arcoíris difuminado que rota detrás de la tarjeta (como un "animated border glow").
+         Tiene que ser un elemento real separado, no un pseudo-elemento de la propia tarjeta: el
+         overflow:hidden del vidrio recortaría el desenfoque antes de que pudiera "sangrar" hacia afuera.
+         El <script> final (initRainbowGlow()) envuelve cada .rainbow-edge en un .glow-wrapper y le
+         antepone un .rainbow-glow hermano — el mismo patrón de capas reales que el liquid glass. */
+      .glow-wrapper { position: relative; }
+      .rainbow-glow {
+        position: absolute;
+        inset: -6px;
+        z-index: 0;
+        border-radius: 20px;
+        overflow: hidden;
+        filter: blur(16px);
+        opacity: 0.2;
+        pointer-events: none;
+      }
+      .rainbow-glow::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300%;
+        height: 300%;
+        transform: translate(-50%, -50%) rotate(0deg);
+        background: conic-gradient(from 0deg, #cf9683 0%, #dfb07c 16%, #c9c095 33%, #a1b59a 50%, #8f9ea1 66%, #8f8d9a 83%, #cf9683 100%);
+        animation: rotate-glow 6s linear infinite;
+      }
+      .glow-wrapper:nth-of-type(even) .rainbow-glow::before {
+        animation-direction: reverse;
+        animation-duration: 7.5s;
+      }
+      @keyframes rotate-glow {
+        to { transform: translate(-50%, -50%) rotate(360deg); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .rainbow-glow::before,
+        .rainbow-edge::after { animation: none; }
+      }
+
+      .pending {
+        border-bottom: 1px dashed #d4af37;
+        color: #705d00;
+        cursor: help;
+      }
+      .hero-prism .pending {
+        color: #ffffff;
+        border-bottom-color: #ffe16e;
+      }
+
+      .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.8s ease, transform 0.8s ease; }
+      .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    </style>
   </head>
-  <body>
-    <main class="page">
-      <h1>Hola mundo</h1>
+
+  <body class="bg-surface text-on-surface font-sans antialiased">
+    <!-- Filtro SVG oculto: distorsión sutil tipo "liquid glass" para backdrop-filter -->
+    <svg width="0" height="0" style="position: absolute; overflow: hidden;" aria-hidden="true">
+      <filter id="liquid-glass-distortion" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="2" seed="7" result="noise" />
+        <feGaussianBlur in="noise" stdDeviation="2" result="blurredNoise" />
+        <feDisplacementMap in="SourceGraphic" in2="blurredNoise" scale="18" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
+
+    <!-- NAV -->
+    <nav class="liquid-nav sticky top-0 z-50 border-b border-outline-variant/60">
+      <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <span class="font-serif italic text-2xl text-secondary">Alquimia de Alma</span>
+        <ul class="hidden md:flex items-center gap-8 text-sm text-on-surface-variant">
+          <li><a class="hover:text-primary transition-colors" href="#portales">Portales</a></li>
+          <li><a class="hover:text-primary transition-colors" href="#incluye">Qué incluye</a></li>
+          <li><a class="hover:text-primary transition-colors" href="#inversion">Inversión</a></li>
+          <li><a class="hover:text-primary transition-colors" href="#faq">FAQ</a></li>
+        </ul>
+        <a href="#inversion" class="hidden md:inline-flex items-center gap-2 bg-primary text-on-primary px-5 py-2 rounded-full text-sm font-semibold uppercase tracking-wide hover:brightness-105 transition">
+          Reservar mi lugar
+        </a>
+        <button id="menu-toggle" class="md:hidden text-on-surface" aria-label="Abrir menú">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="mobile-menu" class="hidden md:hidden border-t border-outline-variant/60 bg-surface px-6 py-4 flex flex-col gap-4 text-on-surface-variant">
+        <a href="#portales">Portales</a>
+        <a href="#incluye">Qué incluye</a>
+        <a href="#inversion">Inversión</a>
+        <a href="#faq">FAQ</a>
+        <a href="#inversion" class="bg-primary text-on-primary text-center px-5 py-2 rounded-full text-sm font-semibold uppercase tracking-wide">Reservar mi lugar</a>
+      </div>
+    </nav>
+
+    <main>
+      <!-- 1. HERO -->
+      <section class="hero-prism relative text-on-hero-surface">
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-16 md:py-24 grid md:grid-cols-2 gap-12 items-center">
+          <div class="space-y-6">
+            <span class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-primary/15 border border-primary/30 text-primary text-xs uppercase tracking-widest">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Segunda etapa del camino alquímico
+            </span>
+
+            <h1 class="font-serif text-4xl md:text-6xl leading-tight">El encuentro con la<br>alquimia de tu alma</h1>
+
+            <p class="text-lg md:text-xl text-on-hero-surface-variant max-w-lg">La segunda etapa del camino alquímico. Un viaje de nueve portales guiado por Transi Aracil, psicóloga Gestalt.</p>
+
+            <p class="text-on-hero-surface-variant/90 max-w-lg leading-relaxed">La alquimia del alma comienza el día que recuerdas que siempre tuviste el poder de crear tu vida. Este proceso es la continuación natural de <em>Encuentro con tu ser</em> — un viaje de nueve portales para profundizar en quien ya eres más allá del miedo, del condicionamiento y del pasado.</p>
+
+            <p class="text-sm text-on-hero-surface-variant flex flex-wrap gap-x-3 gap-y-1">
+              <span>✦ <span class="pending" title="Pendiente de confirmar">[META-ALUMNAS-PREVIA]</span></span>
+              <span>✦ 9 portales</span>
+              <span>✦ Acompañamiento semanal en vivo</span>
+            </p>
+
+            <div class="flex flex-wrap gap-4 pt-2">
+              <a href="#inversion" class="bg-primary text-on-primary px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-widest hover:brightness-105 transition shadow-xl shadow-primary/20">
+                ✦ Reservar mi lugar
+              </a>
+            </div>
+
+            <div class="rainbow-edge prism-glass-dark rounded-2xl p-4 flex items-start gap-3 max-w-lg">
+              <i data-lucide="key" class="w-5 h-5 text-primary shrink-0 mt-0.5"></i>
+              <p class="text-sm text-on-hero-surface-variant">Este programa es exclusivo para quienes ya completaron <strong class="text-on-hero-surface">Encuentro con tu ser</strong>. Si todavía no diste el portal de entrada, comienza ahí. Cuando termines, esta puerta se abrirá.</p>
+            </div>
+
+            <div class="flex items-center gap-3 pt-2">
+              <picture>
+                <source srcset="assets/transi-avatar.webp" type="image/webp">
+                <img src="assets/transi-avatar.jpg" alt="Transi Aracil" class="w-12 h-12 rounded-full border-2 border-on-hero-surface/40 object-cover">
+              </picture>
+              <div>
+                <div class="font-semibold text-on-hero-surface text-sm">Transi Aracil</div>
+                <div class="text-xs text-on-hero-surface-variant">Psicóloga Gestalt</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rainbow-edge rounded-3xl overflow-hidden">
+            <picture>
+              <source srcset="assets/hero-portrait.webp" type="image/webp">
+              <img
+                src="assets/hero-portrait.jpg"
+                alt="Maga con bastón y dragón blanco, contemplando un camino dorado hacia un castillo — alegoría del viaje alquímico"
+                class="aspect-[4/5] w-full h-full object-cover"
+                loading="eager"
+              >
+            </picture>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. PARA QUIÉN ES -->
+      <section class="reveal max-w-6xl mx-auto px-6 py-20" id="para-ti">
+        <h2 class="font-serif text-3xl md:text-4xl text-secondary mb-8">Este viaje es para ti si…</h2>
+        <div class="grid sm:grid-cols-2 gap-4 mb-8">
+          <div class="prism-glass rounded-2xl p-5 flex gap-3">
+            <i data-lucide="check-circle" class="w-5 h-5 text-tertiary shrink-0 mt-0.5"></i>
+            <p class="text-on-surface-variant">Ya completaste <em>Encuentro con tu ser</em> y sentís el llamado a profundizar en el camino alquímico.</p>
+          </div>
+          <div class="prism-glass rounded-2xl p-5 flex gap-3">
+            <i data-lucide="check-circle" class="w-5 h-5 text-tertiary shrink-0 mt-0.5"></i>
+            <p class="text-on-surface-variant">Deseas continuar el viaje de transformación interior, no empezarlo desde cero.</p>
+          </div>
+          <div class="prism-glass rounded-2xl p-5 flex gap-3">
+            <i data-lucide="check-circle" class="w-5 h-5 text-tertiary shrink-0 mt-0.5"></i>
+            <p class="text-on-surface-variant">Estás lista para recordar tu poder creador —y eso te emociona y te asusta a la vez.</p>
+          </div>
+          <div class="prism-glass rounded-2xl p-5 flex gap-3">
+            <i data-lucide="check-circle" class="w-5 h-5 text-tertiary shrink-0 mt-0.5"></i>
+            <p class="text-on-surface-variant">Buscas herramientas espirituales prácticas, con un marco psicológico serio que las respalde.</p>
+          </div>
+        </div>
+        <a href="#inversion" class="inline-flex bg-hero-surface text-on-hero-surface px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-widest hover:brightness-110 transition">✦ Reservar mi lugar</a>
+      </section>
+
+      <!-- 3. PARA QUIÉN NO ES -->
+      <section class="reveal bg-surface-container" id="no-es-para-ti">
+        <div class="max-w-6xl mx-auto px-6 py-20">
+          <h2 class="font-serif text-3xl md:text-4xl text-on-surface mb-8">Este viaje no es para ti si…</h2>
+          <div class="space-y-4 mb-8">
+            <div class="flex gap-3">
+              <i data-lucide="x-circle" class="w-5 h-5 text-error shrink-0 mt-0.5"></i>
+              <p class="text-on-surface-variant">No has completado aún <em>Encuentro con tu ser</em>. Este programa es la profundización —si todavía no diste el primer paso, comienza por ahí.</p>
+            </div>
+            <div class="flex gap-3">
+              <i data-lucide="x-circle" class="w-5 h-5 text-error shrink-0 mt-0.5"></i>
+              <p class="text-on-surface-variant">Buscas una solución rápida o un atajo mágico.</p>
+            </div>
+            <div class="flex gap-3">
+              <i data-lucide="x-circle" class="w-5 h-5 text-error shrink-0 mt-0.5"></i>
+              <p class="text-on-surface-variant">Esperas resultados sin compromiso, sin presencia, sin práctica.</p>
+            </div>
+            <div class="flex gap-3">
+              <i data-lucide="x-circle" class="w-5 h-5 text-error shrink-0 mt-0.5"></i>
+              <p class="text-on-surface-variant">Solo te interesa el contenido grabado para "consumirlo" en cualquier momento.</p>
+            </div>
+            <div class="flex gap-3">
+              <i data-lucide="x-circle" class="w-5 h-5 text-error shrink-0 mt-0.5"></i>
+              <p class="text-on-surface-variant">Prefieres evitar la profundidad emocional y la rendición del ego.</p>
+            </div>
+          </div>
+          <p class="italic text-on-surface-variant max-w-2xl">Filtrar con respeto también es cuidarte. Si este no es tu momento —o si todavía no recorriste el portal de entrada—, honralo, y vuelve cuando lo sea.</p>
+        </div>
+      </section>
+
+      <!-- 4. NUEVE PORTALES -->
+      <section class="reveal max-w-6xl mx-auto px-6 py-20" id="portales">
+        <div class="text-center max-w-2xl mx-auto mb-14 space-y-3">
+          <h2 class="font-serif text-3xl md:text-4xl text-secondary">Nueve portales. Una sola transformación.</h2>
+          <p class="text-on-surface-variant">Cada módulo es una llave. Cada experiencia, una activación. Construimos sobre lo ya integrado en <em>Encuentro con tu ser</em>.</p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <article class="rainbow-edge prism-glass rounded-2xl p-6">
+            <span class="font-serif text-4xl text-primary/70">01</span>
+            <h3 class="font-serif text-xl mt-2 mb-2 text-on-surface">El viaje del héroe</h3>
+            <p class="text-sm text-on-surface-variant leading-relaxed">Reconocerás tu momento vital actual: qué desafíos te trajeron hasta aquí y qué propósito oculto vive detrás de cada experiencia. Aquí aceptas el viaje y das el primer paso en este nuevo nivel.</p>
+          </article>
+          <article class="rainbow-edge prism-glass rounded-2xl p-6">
+            <span class="font-serif text-4xl text-primary/70">02</span>
+            <h3 class="font-serif text-xl mt-2 mb-2 text-on-surface">Rendición del ego</h3>
+            <p class="text-sm text-on-surface-variant leading-relaxed">Para crear algo nuevo es necesario soltar lo que ya no eres. Aprenderás a rendirte y soltar el control, el miedo y las viejas historias, permitiendo que la sabiduría del alma guíe el proceso.</p>
+          </article>
+          <article class="rainbow-edge prism-glass rounded-2xl p-6">
+            <span class="font-serif text-4xl text-primary/70">03</span>
+            <h3 class="font-serif text-xl mt-2 mb-2 text-on-surface">Técnicas de meditación</h3>
+            <p class="text-sm text-on-surface-variant leading-relaxed">Aprenderás técnicas para aquietar la mente, habitar el presente y escuchar la voz profunda de tu ser. Cuando la mente se calma, la manifestación se ordena.</p>
+          </article>
+          <article class="rainbow-edge prism-glass rounded-2xl p-6">
+            <span class="font-serif text-4xl text-primary/70">04</span>
+            <h3 class="font-serif text-xl mt-2 mb-2 text-on-surface">La intuición como brújula</h3>
+            <p class="text-sm text-on-surface-variant leading-relaxed">Cuando confías en tu intuición, el camino se revela paso a paso. Reconocerás señales, tomarás decisiones desde el alma y caminarás con confianza aunque aún no veas el destino completo.</p>
+          </article>
+          <article class="rainbow-edge prism-glass rounded-2xl p-6">
+            <span class="font-serif text-4xl text-primary/70">05</span>
+            <h3 class="font-serif text-xl mt-2 mb-2 text-on-surface">El poder de la manifestación</h3>
+            <p class="text-sm text-on-surface-variant leading-relaxed">No manifiestas desde el deseo — manifiestas desde quien eres. Descubrirás cómo alinear pensamiento, emoción y energía para convertir tu intención en realidad.</p>
+          </article>
+          <article class="rainbow-edge prism-glass rounded-2xl p-6">
+            <span class="font-serif text-4xl text-primary/70">06</span>
+            <h3 class="font-serif text-xl mt-2 mb-2 text-on-surface">Comunicación con el universo</h3>
+            <p class="text-sm text-on-surface-variant leading-relaxed">Profundizarás en la relación energética con la vida: aprenderás a escuchar, pedir y recibir desde la coherencia interior. Cuando te alineas, todo conspira a favor.</p>
+          </article>
+          <article class="rainbow-edge prism-glass rounded-2xl p-6">
+            <span class="font-serif text-4xl text-primary/70">07</span>
+            <h3 class="font-serif text-xl mt-2 mb-2 text-on-surface">Trascendencia-Amor</h3>
+            <p class="text-sm text-on-surface-variant leading-relaxed">Sanarás, integrarás y trascenderás — liberando juicios, culpas y resistencias. Desde el amor, la manifestación se vuelve natural y la vida fluye sin esfuerzo.</p>
+          </article>
+          <article class="rainbow-edge prism-glass rounded-2xl p-6">
+            <span class="font-serif text-4xl text-primary/70">08</span>
+            <h3 class="font-serif text-xl mt-2 mb-2 text-on-surface">Conexión con tu poder interior</h3>
+            <p class="text-sm text-on-surface-variant leading-relaxed">Todo lo que buscas ya vive en ti. Despertarás tu poder interno, reconocerás tu capacidad creadora y anclarás tu nueva identidad alquímica.</p>
+          </article>
+          <article class="rainbow-edge prism-glass rounded-2xl p-6">
+            <span class="font-serif text-4xl text-primary/70">09</span>
+            <h3 class="font-serif text-xl mt-2 mb-2 text-on-surface">Cierre: rueda de vida</h3>
+            <p class="text-sm text-on-surface-variant leading-relaxed">Integrarás todo lo aprendido. Definirás la vida que deseas crear desde tu verdad, aprenderás a sostener tu visión y darás pasos conscientes en coherencia con tu nuevo ser.</p>
+          </article>
+        </div>
+
+        <div class="text-center mt-12">
+          <a href="#inversion" class="inline-flex bg-hero-surface text-on-hero-surface px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-widest hover:brightness-110 transition">✦ Reservar mi lugar</a>
+        </div>
+      </section>
+
+      <!-- 5. POR QUÉ CON TRANSI -->
+      <section class="reveal bg-surface-container-low" id="transi">
+        <div class="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-12 gap-12 items-center">
+          <div class="md:col-span-5">
+            <div class="rainbow-edge rounded-[2.5rem] overflow-hidden">
+              <picture>
+                <source srcset="assets/transi-portrait.webp" type="image/webp">
+                <img
+                  src="assets/transi-portrait.jpg"
+                  alt="Transi Aracil meditando al aire libre, en calma"
+                  class="aspect-square w-full h-full object-cover"
+                  loading="lazy"
+                >
+              </picture>
+            </div>
+          </div>
+          <div class="md:col-span-7 space-y-5">
+            <h2 class="font-serif text-3xl md:text-4xl text-secondary">Quien guía este proceso importa —sobre todo en la segunda etapa.</h2>
+            <p class="text-on-surface-variant leading-relaxed">Transi Aracil es psicóloga Gestalt con años de práctica clínica y un camino propio de transformación interior que la llevó más allá del protocolo terapéutico. Combina la solidez de la psicología occidental con la profundidad de la tradición alquímica —sin jerga de gurú, sin espiritualidad de escaparate.</p>
+            <p class="text-on-surface-variant leading-relaxed">Este programa solo se abre a quienes ya completaron <em>Encuentro con tu ser</em>. Por eso la profundidad que se alcanza es la que es: construimos sobre lo ya integrado. No se trata de subir escalones a la ciega, sino de caminar conscientemente el tramo que sigue.</p>
+            <p class="text-on-surface-variant leading-relaxed">Su manera de acompañar es poco frecuente: presencia real, escucha sin juicio, y la convicción firme de que la transformación no se explica —se vive.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. LO QUE VAS A MANIFESTAR -->
+      <section class="reveal max-w-6xl mx-auto px-6 py-20" id="manifestar">
+        <h2 class="font-serif text-3xl md:text-4xl text-secondary text-center mb-10">Al terminar este viaje, habrás…</h2>
+        <div class="grid sm:grid-cols-2 gap-4 mb-10">
+          <div class="prism-glass rounded-2xl p-5 flex gap-3">
+            <i data-lucide="sparkles" class="w-5 h-5 text-primary shrink-0 mt-0.5"></i>
+            <p class="text-on-surface-variant">Profundizado la claridad y el propósito que ya asomaron en <em>Encuentro con tu ser</em>.</p>
+          </div>
+          <div class="prism-glass rounded-2xl p-5 flex gap-3">
+            <i data-lucide="sparkles" class="w-5 h-5 text-primary shrink-0 mt-0.5"></i>
+            <p class="text-on-surface-variant">Sentido una conexión más íntima contigo, por encima del ruido externo.</p>
+          </div>
+          <div class="prism-glass rounded-2xl p-5 flex gap-3">
+            <i data-lucide="sparkles" class="w-5 h-5 text-primary shrink-0 mt-0.5"></i>
+            <p class="text-on-surface-variant">Confiado en tu intuición para tomar decisiones desde ella, no desde el miedo.</p>
+          </div>
+          <div class="prism-glass rounded-2xl p-5 flex gap-3">
+            <i data-lucide="sparkles" class="w-5 h-5 text-primary shrink-0 mt-0.5"></i>
+            <p class="text-on-surface-variant">Habitado una paz interior que no dependa de las circunstancias.</p>
+          </div>
+          <div class="prism-glass rounded-2xl p-5 flex gap-3 sm:col-span-2">
+            <i data-lucide="sparkles" class="w-5 h-5 text-primary shrink-0 mt-0.5"></i>
+            <p class="text-on-surface-variant">Creado tu vida desde el alma —no desde el deber, no desde la carencia.</p>
+          </div>
+        </div>
+        <div class="text-center">
+          <a href="#inversion" class="inline-flex bg-hero-surface text-on-hero-surface px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-widest hover:brightness-110 transition">✦ Reservar mi lugar</a>
+        </div>
+      </section>
+
+      <!-- 7. SEMANA TÍPICA -->
+      <section class="reveal bg-surface-container" id="semana">
+        <div class="max-w-6xl mx-auto px-6 py-20">
+          <h2 class="font-serif text-3xl md:text-4xl text-secondary text-center mb-12">Lo que vas a vivir, semana a semana.</h2>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="prism-glass rounded-2xl p-6 border-l-4 border-l-primary">
+              <i data-lucide="book-open" class="w-5 h-5 text-primary mb-3"></i>
+              <div class="font-serif text-lg text-on-surface mb-1">Lunes</div>
+              <p class="text-sm text-on-surface-variant leading-relaxed">Portal + meditación guiada disponible. Te sentás, escuchás a tu ritmo, integrás lo que resuene.</p>
+            </div>
+            <div class="prism-glass rounded-2xl p-6 border-l-4 border-l-secondary">
+              <i data-lucide="users" class="w-5 h-5 text-secondary mb-3"></i>
+              <div class="font-serif text-lg text-on-surface mb-1">Miércoles</div>
+              <p class="text-sm text-on-surface-variant leading-relaxed">Sesión semanal en vivo con Transi y el grupo (90 min). Preguntas, práctica compartida, presencia.</p>
+            </div>
+            <div class="prism-glass rounded-2xl p-6 border-l-4 border-l-tertiary">
+              <i data-lucide="feather" class="w-5 h-5 text-tertiary mb-3"></i>
+              <div class="font-serif text-lg text-on-surface mb-1">Viernes</div>
+              <p class="text-sm text-on-surface-variant leading-relaxed">Ritual de integración con lectura recomendada. Bajamos la experiencia a tierra.</p>
+            </div>
+            <div class="prism-glass rounded-2xl p-6 border-l-4 border-l-outline">
+              <i data-lucide="moon" class="w-5 h-5 text-outline mb-3"></i>
+              <div class="font-serif text-lg text-on-surface mb-1">Domingo</div>
+              <p class="text-sm text-on-surface-variant leading-relaxed">Silencio contemplativo, escritura opcional y cierre de semana.</p>
+            </div>
+          </div>
+          <p class="text-center italic text-on-surface-variant mt-10">Las sesiones en vivo quedan grabadas para quienes no puedan asistir en tiempo real.</p>
+        </div>
+      </section>
+
+      <!-- 8. TESTIMONIOS -->
+      <section class="reveal max-w-6xl mx-auto px-6 py-20" id="testimonios">
+        <h2 class="font-serif text-3xl md:text-4xl text-secondary text-center mb-12">Lo que otras mujeres han dicho después de recorrerlo.</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          <blockquote class="prism-glass rounded-2xl p-6">
+            <i data-lucide="quote" class="w-6 h-6 text-primary/60 mb-3"></i>
+            <p class="pending text-on-surface-variant italic mb-4" title="Pendiente de confirmar">[TESTIMONIO 1]</p>
+            <cite class="not-italic text-sm text-on-surface"><span class="pending">[nombre]</span>, <span class="pending">[ciudad]</span></cite>
+          </blockquote>
+          <blockquote class="prism-glass rounded-2xl p-6">
+            <i data-lucide="quote" class="w-6 h-6 text-primary/60 mb-3"></i>
+            <p class="pending text-on-surface-variant italic mb-4" title="Pendiente de confirmar">[TESTIMONIO 2]</p>
+            <cite class="not-italic text-sm text-on-surface"><span class="pending">[nombre]</span>, <span class="pending">[ciudad]</span></cite>
+          </blockquote>
+          <blockquote class="prism-glass rounded-2xl p-6">
+            <i data-lucide="quote" class="w-6 h-6 text-primary/60 mb-3"></i>
+            <p class="pending text-on-surface-variant italic mb-4" title="Pendiente de confirmar">[TESTIMONIO 3]</p>
+            <cite class="not-italic text-sm text-on-surface"><span class="pending">[nombre]</span>, <span class="pending">[ciudad]</span></cite>
+          </blockquote>
+        </div>
+        <p class="text-center italic text-on-surface-variant mt-10">Si sentís que tu historia puede resonar con quien viene detrás, nos encantaría incluirla. Escríbenos.</p>
+      </section>
+
+      <!-- 9. QUÉ INCLUYE -->
+      <section class="reveal bg-surface-container" id="incluye">
+        <div class="max-w-6xl mx-auto px-6 py-20">
+          <h2 class="font-serif text-3xl md:text-4xl text-secondary text-center mb-12">Qué recibes cuando reservas tu lugar</h2>
+          <div class="grid sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
+            <div class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-tertiary shrink-0 mt-0.5"></i><p class="text-on-surface-variant">9 portales de trabajo profundo — acceso completo, disponibles desde el inicio y a tu ritmo.</p></div>
+            <div class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-tertiary shrink-0 mt-0.5"></i><p class="text-on-surface-variant">Meditaciones guiadas — una por cada portal, audio descargable.</p></div>
+            <div class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-tertiary shrink-0 mt-0.5"></i><p class="text-on-surface-variant">Libro de acompañamiento en formato digital — lectura recomendada para cada semana.</p></div>
+            <div class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-tertiary shrink-0 mt-0.5"></i><p class="text-on-surface-variant">Sesiones semanales en vivo con Transi y el grupo — 9 encuentros de 90 minutos, en horario a convenir.</p></div>
+            <div class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-tertiary shrink-0 mt-0.5"></i><p class="text-on-surface-variant">Comunidad privada de personas en el mismo camino — todas ellas también pasaron por <em>Encuentro con tu ser</em>.</p></div>
+            <div class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-tertiary shrink-0 mt-0.5"></i><p class="text-on-surface-variant">Cierre con rueda de vida personal — revisión final de tu vida concreta, no solo simbólica.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. INVERSIÓN -->
+      <section class="reveal relative max-w-6xl mx-auto px-6 py-20" id="inversion">
+        <div class="rainbow-edge prism-glass rounded-[2rem] p-8 md:p-14 max-w-3xl mx-auto text-center">
+          <p class="font-serif text-5xl text-secondary mb-1">€ 1.111 <span class="text-lg text-on-surface-variant font-sans">· también en $ 999 USD</span></p>
+          <p class="text-sm uppercase tracking-widest text-on-surface-variant mb-6">Un solo pago · Acceso completo al proceso</p>
+          <p class="text-on-surface-variant mb-8">Incluido todo lo descrito arriba. Sin costos ocultos, sin paquetes adicionales.</p>
+
+          <ul class="text-left space-y-3 mb-10 text-sm text-on-surface-variant">
+            <li class="flex gap-2"><i data-lucide="credit-card" class="w-4 h-4 text-primary shrink-0 mt-0.5"></i><span><strong class="text-on-surface">Cómo pagar:</strong> <span class="pending">[METODOS-PAGO]</span> (transferencia, tarjeta, etc.)</span></li>
+            <li class="flex gap-2"><i data-lucide="clock" class="w-4 h-4 text-primary shrink-0 mt-0.5"></i><span><strong class="text-on-surface">Confirmación:</strong> recibirás acceso al primer portal dentro de las siguientes <span class="pending">[TIEMPO-RESPUESTA]</span> hábiles tras validar el pago.</span></li>
+            <li class="flex gap-2"><i data-lucide="key" class="w-4 h-4 text-primary shrink-0 mt-0.5"></i><span><strong class="text-on-surface">Verificación del prerrequisito:</strong> tras el pago, Transi (o su equipo) confirmará que hayas completado <em>Encuentro con tu ser</em>. El acceso se activa tras esta validación.</span></li>
+          </ul>
+
+          <a href="#faq" class="inline-flex bg-primary text-on-primary px-10 py-4 rounded-full text-sm font-semibold uppercase tracking-widest hover:brightness-105 transition shadow-xl shadow-primary/20">✦ Reservar mi lugar</a>
+        </div>
+      </section>
+
+      <!-- 11. GARANTÍA -->
+      <section class="reveal bg-surface-container" id="garantia">
+        <div class="max-w-3xl mx-auto px-6 py-20 text-center">
+          <i data-lucide="shield-check" class="w-8 h-8 text-tertiary mx-auto mb-4"></i>
+          <h2 class="font-serif text-3xl md:text-4xl text-secondary mb-6">Compromiso mutuo.</h2>
+          <p class="pending text-on-surface-variant mb-4" title="Pendiente de confirmar">[POLITICA-DEVOLUCION]</p>
+          <p class="italic text-on-surface-variant">Confiamos en que este proceso resuene contigo. Si después de los primeros días sientes que no es tu momento, queremos que tengas la libertad de volver atrás.</p>
+        </div>
+      </section>
+
+      <!-- 12. FAQ -->
+      <section class="reveal max-w-3xl mx-auto px-6 py-20" id="faq">
+        <h2 class="font-serif text-3xl md:text-4xl text-secondary text-center mb-10">Preguntas frecuentes</h2>
+        <div class="space-y-3">
+          <details class="group prism-glass rounded-xl p-5">
+            <summary class="flex items-center justify-between cursor-pointer font-medium text-on-surface list-none">
+              ¿Necesito haber hecho algo antes?
+              <i data-lucide="chevron-down" class="w-4 h-4 text-primary transition-transform group-open:rotate-180"></i>
+            </summary>
+            <p class="text-sm text-on-surface-variant mt-3 leading-relaxed">Sí. Este programa es la segunda etapa del camino alquímico. Solo accede quien ya completó <em>Encuentro con tu ser</em> (o un proceso equivalente validado con Transi). Si todavía no diste el portal de entrada, empezá por ahí —y cuando lo termines, esta puerta se abrirá.</p>
+          </details>
+          <details class="group prism-glass rounded-xl p-5">
+            <summary class="flex items-center justify-between cursor-pointer font-medium text-on-surface list-none">
+              ¿Cuánto dura?
+              <i data-lucide="chevron-down" class="w-4 h-4 text-primary transition-transform group-open:rotate-180"></i>
+            </summary>
+            <p class="text-sm text-on-surface-variant mt-3 leading-relaxed">El proceso completo se vive en nueve semanas, con sesiones semanales en vivo.</p>
+          </details>
+          <details class="group prism-glass rounded-xl p-5">
+            <summary class="flex items-center justify-between cursor-pointer font-medium text-on-surface list-none">
+              ¿Cuál es la fecha de inicio de la próxima cohorte?
+              <i data-lucide="chevron-down" class="w-4 h-4 text-primary transition-transform group-open:rotate-180"></i>
+            </summary>
+            <p class="text-sm text-on-surface-variant mt-3 leading-relaxed">La cohorte comienza el <span class="pending">[FECHA-INICIO]</span>. Las inscripciones cierran el <span class="pending">[FECHA-CIERRE-INSCRIPCION]</span>.</p>
+          </details>
+          <details class="group prism-glass rounded-xl p-5">
+            <summary class="flex items-center justify-between cursor-pointer font-medium text-on-surface list-none">
+              ¿Cuántas plazas hay?
+              <i data-lucide="chevron-down" class="w-4 h-4 text-primary transition-transform group-open:rotate-180"></i>
+            </summary>
+            <p class="text-sm text-on-surface-variant mt-3 leading-relaxed"><span class="pending">[CUPOS]</span> mujeres por cohorte, para sostener la profundidad del acompañamiento.</p>
+          </details>
+          <details class="group prism-glass rounded-xl p-5">
+            <summary class="flex items-center justify-between cursor-pointer font-medium text-on-surface list-none">
+              ¿Necesito experiencia previa?
+              <i data-lucide="chevron-down" class="w-4 h-4 text-primary transition-transform group-open:rotate-180"></i>
+            </summary>
+            <p class="text-sm text-on-surface-variant mt-3 leading-relaxed">Más allá del prerrequisito (<em>Encuentro con tu ser</em>), no. Solo disposición interna para el nivel de profundidad que propone esta etapa.</p>
+          </details>
+          <details class="group prism-glass rounded-xl p-5">
+            <summary class="flex items-center justify-between cursor-pointer font-medium text-on-surface list-none">
+              ¿Puedo hacerlo desde cualquier país?
+              <i data-lucide="chevron-down" class="w-4 h-4 text-primary transition-transform group-open:rotate-180"></i>
+            </summary>
+            <p class="text-sm text-on-surface-variant mt-3 leading-relaxed">Sí. Es 100% online. Las sesiones en vivo se graban para quienes no puedan asistir en tiempo real.</p>
+          </details>
+          <details class="group prism-glass rounded-xl p-5">
+            <summary class="flex items-center justify-between cursor-pointer font-medium text-on-surface list-none">
+              ¿Qué métodos de pago aceptan?
+              <i data-lucide="chevron-down" class="w-4 h-4 text-primary transition-transform group-open:rotate-180"></i>
+            </summary>
+            <p class="text-sm text-on-surface-variant mt-3 leading-relaxed"><span class="pending">[METODOS-PAGO]</span>. Tras el pago, Transi (o su equipo) confirmará el prerrequisito en un plazo de <span class="pending">[TIEMPO-RESPUESTA]</span> hábiles, y entonces se activa el acceso completo.</p>
+          </details>
+          <details class="group prism-glass rounded-xl p-5">
+            <summary class="flex items-center justify-between cursor-pointer font-medium text-on-surface list-none">
+              ¿Cómo recibo el material?
+              <i data-lucide="chevron-down" class="w-4 h-4 text-primary transition-transform group-open:rotate-180"></i>
+            </summary>
+            <p class="text-sm text-on-surface-variant mt-3 leading-relaxed">Al activar el acceso, recibes un correo con las credenciales de la plataforma, las meditaciones, el libro digital y el calendario de sesiones en vivo.</p>
+          </details>
+        </div>
+      </section>
+
+      <!-- CIERRE -->
+      <section class="hero-prism relative text-on-hero-surface">
+        <div class="relative z-10 max-w-3xl mx-auto px-6 py-20 text-center space-y-6">
+          <p class="font-serif italic text-2xl md:text-3xl leading-relaxed text-on-hero-surface">"La alquimia no transforma el mundo. Transforma tu conciencia, y el mundo responde. Si ya diste el primer paso, sabés que todo comienza dentro de ti."</p>
+          <p class="text-on-hero-surface-variant">Próxima edición: <span class="pending" title="Pendiente de confirmar">[FECHA-INICIO]</span>. Cupos limitados a <span class="pending" title="Pendiente de confirmar">[CUPOS]</span> mujeres.</p>
+          <a href="#inversion" class="inline-flex bg-primary text-on-primary px-10 py-4 rounded-full text-sm font-semibold uppercase tracking-widest hover:brightness-105 transition shadow-xl shadow-primary/20">✦ Reservar mi lugar</a>
+        </div>
+      </section>
     </main>
+
+    <footer class="bg-surface-container-high border-t border-outline-variant/60">
+      <div class="max-w-6xl mx-auto px-6 py-12 flex flex-col items-center gap-6 text-center">
+        <span class="font-serif italic text-2xl text-secondary">Alquimia de Alma</span>
+        <div class="flex gap-6 text-on-surface-variant">
+          <a href="#" class="hover:text-primary transition-colors" aria-label="Escríbenos"><i data-lucide="message-circle" class="w-5 h-5"></i></a>
+          <a href="#" class="hover:text-primary transition-colors" aria-label="Correo"><i data-lucide="mail" class="w-5 h-5"></i></a>
+        </div>
+        <p class="text-xs text-outline">&copy; 2026 Transi Aracil — Alquimia de Alma</p>
+      </div>
+    </footer>
+
+    <script>
+      lucide.createIcons();
+
+      // Liquid glass (estilo Apple): monta las capas effect/tint/shine/content como
+      // hijos reales de cada wrapper, en vez de pseudo-elementos combinados con el
+      // contenido — así el filtro de distorsión SVG solo afecta al "vidrio", nunca al texto.
+      function initLiquidGlass() {
+        document.querySelectorAll(".prism-glass, .prism-glass-dark, .liquid-nav").forEach((el) => {
+          if (el.classList.contains("liquid-glass--ready")) return;
+
+          // Se antepone (no se envuelve): mover el contenido original a un wrapper
+          // rompería <summary> dentro de <details> (el navegador deja de reconocerlo
+          // como resumen). El contenido original queda tal cual, solo se eleva por CSS.
+          const effect = document.createElement("div");
+          effect.className = "liquid-glass__effect";
+          const tint = document.createElement("div");
+          tint.className = "liquid-glass__tint";
+          const shine = document.createElement("div");
+          shine.className = "liquid-glass__shine";
+
+          el.prepend(effect, tint, shine);
+          el.classList.add("liquid-glass--ready");
+        });
+      }
+      initLiquidGlass();
+
+      // Glow arcoíris: envuelve cada .rainbow-edge en un wrapper + un halo difuminado
+      // hermano que rota detrás — necesita ser un elemento real (ver comentario en el CSS).
+      function initRainbowGlow() {
+        document.querySelectorAll(".rainbow-edge").forEach((el) => {
+          if (el.parentElement && el.parentElement.classList.contains("glow-wrapper")) return;
+
+          const wrapper = document.createElement("div");
+          wrapper.className = "glow-wrapper";
+          el.parentNode.insertBefore(wrapper, el);
+
+          const glow = document.createElement("div");
+          glow.className = "rainbow-glow";
+
+          wrapper.append(glow, el);
+        });
+      }
+      initRainbowGlow();
+
+      document.getElementById("menu-toggle").addEventListener("click", () => {
+        document.getElementById("mobile-menu").classList.toggle("hidden");
+      });
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+
+      // Parallax: la foto del hero se desplaza más lento que el scroll (profundidad).
+      const parallaxEls = document.querySelectorAll(".hero-prism");
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!prefersReducedMotion && parallaxEls.length) {
+        const RANGE = 36; // px de recorrido máximo en cada sentido
+        let ticking = false;
+        const updateParallax = () => {
+          const vh = window.innerHeight;
+          parallaxEls.forEach((el) => {
+            const rect = el.getBoundingClientRect();
+            const center = rect.top + rect.height / 2;
+            const progress = (center - vh / 2) / (vh / 2 + rect.height / 2);
+            const shift = Math.max(-1, Math.min(1, progress)) * RANGE;
+            el.style.setProperty("--hero-parallax", shift.toFixed(1) + "px");
+          });
+          ticking = false;
+        };
+        updateParallax();
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (!ticking) {
+              requestAnimationFrame(updateParallax);
+              ticking = true;
+            }
+          },
+          { passive: true }
+        );
+        window.addEventListener("resize", updateParallax);
+      }
+    </script>
   </body>
 </html>
