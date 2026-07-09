@@ -125,7 +125,7 @@ Bloque de precio:
 Subtexto (qué incluye + qué no):
 Un solo pago para acceder al proceso completo de Alquimia del Alma. El precio incluye los 9 portales de trabajo profundo, las meditaciones guiadas descargables, el libro digital de acompañamiento, las 9 sesiones semanales en vivo con Transi y el grupo, el acceso a la comunidad privada y el cierre final con rueda de vida personal.
 Información de pago (operativo):
-Formas de pago: tarjeta, Bizum o transferencia bancaria. Confirmación: Recibirás acceso al primer portal dentro de las siguientes [TIEMPO-RESPUESTA] hábiles tras validar el pago.
+Formas de pago: tarjeta, Bizum o transferencia bancaria.
 CTA contextual:
 ✦ Reservar mi lugar
 11. Garantía y devolución
