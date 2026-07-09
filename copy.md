@@ -121,11 +121,11 @@ Qué recibes cuando reservas tu lugar
 Heading:
 La inversión para tu transformación
 Bloque de precio:
-€ 1.111 (precio por pronto pago, tachado € 1.333) · Un solo pago · Acceso completo al proceso
+€ 1.111 (tachado € 1.333) · Precio especial por pronto pago
 Subtexto (qué incluye + qué no):
-Incluido todo lo descrito arriba. Sin costos ocultos, sin paquetes adicionales.
+Un solo pago para acceder al proceso completo de Alquimia del Alma. El precio incluye los 9 portales de trabajo profundo, las meditaciones guiadas descargables, el libro digital de acompañamiento, las 9 sesiones semanales en vivo con Transi y el grupo, el acceso a la comunidad privada y el cierre final con rueda de vida personal.
 Información de pago (operativo):
-Cómo pagar: tarjeta, Bizum o transferencia bancaria. Confirmación: Recibirás acceso al primer portal dentro de las siguientes [TIEMPO-RESPUESTA] hábiles tras validar el pago.
+Formas de pago: tarjeta, Bizum o transferencia bancaria. Confirmación: Recibirás acceso al primer portal dentro de las siguientes [TIEMPO-RESPUESTA] hábiles tras validar el pago.
 CTA contextual:
 ✦ Reservar mi lugar
 11. Garantía y devolución
